@@ -32,9 +32,8 @@ class Brett:
 		self.brett = nytt_brett
 
 	def antall_naboer(self, x, y):
-		return self.er_levende(x-1,y-1)+self.er_levende(x,y-1)+self.er_levende(x+1,y-1)+\
-			self.er_levende(x-1, y)+self.er_levende(x+1,y)+\
-			self.er_levende(x-1,y+1)+self.er_levende(x,y+1)+self.er_levende(x+1,y+1)
+		neighbours = ((x-1,y-1), (x, y-1), (x+1, y-1), (x-1, y), (x+1, y), (x-1, y+1), (x, y+1), (x+1, y+1))
+		return sum([self.er_levende(*n) for n in neighbours])
 
 	def oppstaar(self, x, y):
 		return self.antall_naboer(x,y) == 3
