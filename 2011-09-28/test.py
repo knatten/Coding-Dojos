@@ -49,24 +49,11 @@ class Brett:
 			string += "\n"
 		return string
 
-#def __main__(self):
-#	brett = Brett(10)
-	
-
-class TestNabo(unittest.TestCase):
+class TestBrett(unittest.TestCase):
 	def test_antall_naboer_med_null_naboer(self):
 		brett = Brett(3)
 		antall_naboer = brett.antall_naboer(1,1)
 		self.assertEqual(0,antall_naboer)
-
-	def test_lever(self):
-		brett = Brett(3)
-		brett.gi_liv(2,2)
-		self.assertTrue(brett.er_levende(2,2))
-		self.assertFalse(brett.er_levende(1,1))
-		self.assertFalse(brett.er_levende(0,0))
-		self.assertFalse(brett.er_levende(2,1))
-		self.assertFalse(brett.er_levende(1,2))
 
 	def test_antall_naboer_med_en_nabo(self):
 		brett = Brett(3)
@@ -74,18 +61,15 @@ class TestNabo(unittest.TestCase):
 		self.assertEqual(1,  brett.antall_naboer(1,1))
 		brett.gi_liv(0,1)
 		self.assertEqual(2,  brett.antall_naboer(1,1))
-	
-	def test_er_fortsatt_levende_med_to_naboer(self):
-		brett = Brett(3)
-		brett.gi_liv_liste((1,1), (0,0), (0,1))
-		brett.neste_runde()
-		self.assertTrue(brett.er_levende(1,1))
 
-	def test_doer_hvis_kun_en_nabo(self):
+	def test_gi_liv(self):
 		brett = Brett(3)
-		brett.gi_liv_liste((1,1), (2,1))
-		brett.neste_runde()
+		brett.gi_liv(2,2)
+		self.assertTrue(brett.er_levende(2,2))
 		self.assertFalse(brett.er_levende(1,1))
+		self.assertFalse(brett.er_levende(0,0))
+		self.assertFalse(brett.er_levende(2,1))
+		self.assertFalse(brett.er_levende(1,2))
 
 	def test_oppstaar_med_tre_naboer(self):
 		brett = Brett(3)
@@ -106,10 +90,27 @@ class TestNabo(unittest.TestCase):
 		brett = Brett(3)
 		brett.gi_liv_liste((0,0), (1,0), (1,1))
 		self.assertTrue(brett.overlever(1,1))
+	
+	def test_overlever_med_tre_naboer(self):
+		brett = Brett(3)
+		brett.gi_liv_liste((0,0), (1,0), (1,1), (2,1))
+		self.assertTrue(brett.overlever(1,1))
+
+	def test_overlever_ikke_med_kun_en_nabo(self):
+		brett = Brett(3)
+		brett.gi_liv_liste((1,1), (2,1))
+		brett.neste_runde()
+		self.assertFalse(brett.er_levende(1,1))
 		
-	def test_doer_med_fire_naboer(self):
+	def test_overlever_ikke_med_fire_naboer(self):
 		brett = Brett(3)
 		brett.gi_liv_liste((0,0), (1,0), (2,2), (2,0), (1,1))
 		self.assertFalse(brett.overlever(1,1))
+	
+	def test_er_fortsatt_levende_med_to_naboer(self):
+		brett = Brett(3)
+		brett.gi_liv_liste((1,1), (0,0), (0,1))
+		brett.neste_runde()
+		self.assertTrue(brett.er_levende(1,1))
 
 unittest.main()
