@@ -12,10 +12,12 @@ class Brett:
 		self.brett = self.lag_brett(dim)
 
 	def gi_liv(self,x,y):
-		self.brett[x][y] = True
+		self.gi_liv_liste((x,y))
 
-	#def gi_liv_liste(self, liste):
-	#	for i in range(0,len(liste))
+	def gi_liv_liste(self, *liste):
+		for i in range(0,len(liste)):
+			x, y = liste[i]
+			self.brett[x][y] = True
 
 	def er_levende(self, x, y):
 		if 0 <= x < len(self.brett) and 0 <= y < len(self.brett):
@@ -76,55 +78,39 @@ class TestNabo(unittest.TestCase):
 	
 	def test_er_fortsatt_levende_med_to_naboer(self):
 		brett = Brett(3)
-		brett.gi_liv(1,1)
-		brett.gi_liv(0,0)
-		brett.gi_liv(0,1)
+		brett.gi_liv_liste((1,1), (0,0), (0,1))
 		brett.neste_runde()
 		self.assertTrue(brett.er_levende(1,1))
 
 	def test_doer_hvis_kun_en_nabo(self):
 		brett = Brett(3)
-		brett.gi_liv(1,1)
-		brett.gi_liv(2,1)
+		brett.gi_liv_liste((1,1), (2,1))
 		brett.neste_runde()
 		self.assertFalse(brett.er_levende(1,1))
 
 	def test_oppstaar_med_tre_naboer(self):
 		brett = Brett(3)
-		brett.gi_liv(0,0)
-		brett.gi_liv(1,0)
-		brett.gi_liv(2,0)
+		brett.gi_liv_liste((0,0), (1,0), (2,0))
 		self.assertTrue(brett.oppstaar(1,1))
 
 	def test_oppstaar_ikke__med_fler_enn_tre_naboer(self):
 		brett = Brett(3)
-		brett.gi_liv(0,0)
-		brett.gi_liv(1,0)
-		brett.gi_liv(2,0)
-		brett.gi_liv(2,1)
+		brett.gi_liv_liste((0,0),(1,0), (2,0), (2,1))
 		self.assertFalse(brett.oppstaar(1,1))
 	
 	def test_oppstaar_ikke_med_to_naboer(self):
 		brett = Brett(3)
-		brett.gi_liv(0,0)
-		brett.gi_liv(1,0)
+		brett.gi_liv_liste((0,0),(1,0))
 		self.assertFalse(brett.oppstaar(1,1))	
 	
 	def test_overlever_med_to_naboer(self):
 		brett = Brett(3)
-		brett.gi_liv(0,0)
-		brett.gi_liv(1,0)
-		brett.gi_liv(1,1)
+		brett.gi_liv_liste((0,0), (1,0), (1,1))
 		self.assertTrue(brett.overlever(1,1))
 		
 	def test_doer_med_fire_naboer(self):
 		brett = Brett(3)
-		brett.gi_liv(0,0)
-		brett.gi_liv(1,0)
-		brett.gi_liv(2,2)
-		brett.gi_liv(2,0)
-		
-		brett.gi_liv(1,1)
+		brett.gi_liv_liste((0,0), (1,0), (2,2), (2,0), (1,1))
 		self.assertFalse(brett.overlever(1,1))
 
 unittest.main()
